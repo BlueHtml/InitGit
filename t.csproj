@@ -7,6 +7,10 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <UserSecretsId>t-e8fd67e369ece872a97636321123448eb4a73f342a8e118259ea2049df50c981</UserSecretsId>
+
+        <StripSymbols>false</StripSymbols>
+
+    <IlcGenerateStackTraceData>true</IlcGenerateStackTraceData>
   </PropertyGroup>
 
 </Project>
