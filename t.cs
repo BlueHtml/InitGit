@@ -19,7 +19,7 @@ Console.WriteLine("4");
 
 
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateSlimBuilder(args);
 
 var app = builder.Build();
 
