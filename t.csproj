@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,9 +8,13 @@
     <PublishAot>true</PublishAot>
     <UserSecretsId>t-e8fd67e369ece872a97636321123448eb4a73f342a8e118259ea2049df50c981</UserSecretsId>
 
-        <StripSymbols>false</StripSymbols>
+    <!-- 启用完全静态链接 -->
+    <StaticExecutable>true</StaticExecutable>
+    <!-- 使用不变全球化模式，避免ICU库依赖 -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- 可选：剥离符号以减小文件体积 -->
+    <StripSymbols>true</StripSymbols>
 
-    <IlcGenerateStackTraceData>true</IlcGenerateStackTraceData>
   </PropertyGroup>
 
 </Project>
