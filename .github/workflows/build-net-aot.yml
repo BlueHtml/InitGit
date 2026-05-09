@@ -1,0 +1,55 @@
+name: build-net-aot
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  build:
+
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+
+    # 【核心配置】指定在容器内运行该 Job，AlmaLinux 8 100% 兼容你的 el8 系统，glibc 为 2.28
+    container:
+      image: almalinux:8
+
+    steps:
+    # 1. 安装系统底层依赖和 AOT 编译所需的 C++ 工具链
+    - name: Install System Dependencies & C++ Toolchain
+      run: |
+        dnf update -y
+        # 安装 git (checkout需要), clang/gcc/zlib-devel (AOT需要), 以及下载工具
+        dnf install -y git gcc clang zlib-devel wget tar gzip
+
+    # 2. 拉取代码
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 3. 手动安装 .NET 10 SDK (因为旧版 Linux 容器不自带最新的 .NET)
+    - name: Install .NET 10 SDK
+      run: |
+        wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+        chmod +x dotnet-install.sh
+        ./dotnet-install.sh --channel 10.0 --install-dir /usr/share/dotnet
+        # 将 dotnet 命令链接到全局
+        ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+    # 4. 验证环境信息（可选，用于排错确认版本）
+    - name: Verify Environment
+      run: |
+        ldd --version
+        dotnet --info
+
+    # 5. 执行 Native AOT 编译
+    - name: Publish Native AOT
+      # 如果你的 .csproj 不在根目录，请在命令末尾加上你的项目路径，例如: ./src/MyApp.csproj
+      run: dotnet publish -c Release -r linux-x64 -p:PublishAot=true
+
+    # 6. 将编译好的二进制文件上传为 GitHub Artifacts，供你下载
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-app-linux-x64-el8
+        # 请根据你的实际项目名调整此路径，当前默认是针对单项目的标准输出路径
+        path: bin/Release/net10.0/linux-x64/publish/
