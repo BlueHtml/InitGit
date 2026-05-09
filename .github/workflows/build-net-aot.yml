@@ -44,7 +44,7 @@ jobs:
     # 5. 执行 Native AOT 编译
     - name: Publish Native AOT
       # 如果你的 .csproj 不在根目录，请在命令末尾加上你的项目路径，例如: ./src/MyApp.csproj
-      run: dotnet publish -c Release -r linux-x64 -p:PublishAot=true
+      run: dotnet publish -c Release -r linux-x64 --self-contained true -p:PublishAot=true
 
     # 6. 将编译好的二进制文件上传为 GitHub Artifacts，供你下载
     - name: Upload Artifact
