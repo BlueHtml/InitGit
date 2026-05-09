@@ -20,7 +20,7 @@ jobs:
       run: |
         dnf update -y
         # 安装 git (checkout需要), clang/gcc/zlib-devel (AOT需要), 以及下载工具
-        dnf install -y git gcc clang zlib-devel wget tar gzip
+        dnf install -y icu-libs git gcc clang zlib-devel wget tar gzip
 
     # 2. 拉取代码
     - name: Checkout code
