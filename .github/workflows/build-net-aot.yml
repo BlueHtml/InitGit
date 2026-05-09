@@ -20,6 +20,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install native dependencies
+      run: |
+        apk add --no-cache clang build-base zlib-dev
+
     # 4. 验证环境信息（可选，用于排错确认版本）
     - name: Verify Environment
       run: |
