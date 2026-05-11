@@ -20,6 +20,11 @@ Console.WriteLine("4");
 
 
 var builder = WebApplication.CreateSlimBuilder(args);
+// Program.cs 中配置 Kestrel
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenUnixSocket("/home/deiltahy/tmp/dotnet-app.sock");
+});
 
 var app = builder.Build();
 
